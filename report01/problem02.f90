@@ -17,7 +17,7 @@ PROGRAM problem02
         !Calculation
 10      IF (k ** 3 == nn) THEN
                 ncube = k * ns
-                PRINT *, 'The cube root of given integer is', ncube
+                PRINT '("The cube root of given integer:", f8.0)', ncube
         ELSE
                 IF (k ** 3 >= nn) THEN
                         PRINT *, 'The cube root of given integer does not exist.'

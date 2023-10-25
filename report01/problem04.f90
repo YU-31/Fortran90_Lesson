@@ -4,7 +4,7 @@ PROGRAM problem04
         !Initialize variables
         IMPLICIT NONE
         INTEGER :: n, k
-        REAL, PARAMETER :: pi = 3.141593e0
+        REAL(8), PARAMETER :: pi = 3.14159265358979e0
         COMPLEX :: a_k0                                 !Single precision
         COMPLEX(kind(0d0)) :: a_k1                      !Double precision
         COMPLEX, PARAMETER :: iunit = (0e0, 1e0)        !Imaginary unit    
