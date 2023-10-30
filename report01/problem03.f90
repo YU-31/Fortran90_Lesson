@@ -12,8 +12,8 @@ PROGRAM problem03
                 PRINT *, 'The square root does not exist in real space.'
         ELSE
                 !Calculation
-                g = 1.0
-                error = 1.0e-10                                 !Error tolerance
+                g = 1.0d0
+                error = 1.0d-10                                 !Error tolerance
 10              delta = ABS(g ** 2 - x)                         !Error in approximation g
                 IF (delta < error) THEN
                         PRINT '("root(x)=", f15.10)', g         !Set output length

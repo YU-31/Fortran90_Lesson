@@ -1,10 +1,9 @@
-!Determine if there is a cube root of an integer.
+!Determine if there is an integral cube root of an integer.
 PROGRAM problem02
 
         !Initialize variables
         IMPLICIT NONE
-        INTEGER :: n, nn, ns, k
-        REAL :: ncube
+        INTEGER :: n, nn, ns, k, ncube
         k = 0
 
         !Set n as an integer
@@ -17,14 +16,14 @@ PROGRAM problem02
         !Calculation
 10      IF (k ** 3 == nn) THEN
                 ncube = k * ns
-                PRINT '("The cube root of given integer:", f8.0)', ncube
+                PRINT *, 'Integral cube root of given integer:', ncube
         ELSE
                 IF (k ** 3 >= nn) THEN
-                        PRINT *, 'The cube root of given integer does not exist.'
+                        PRINT *, 'Integral cube root of given integer does not exist.'
                 ELSE
                         k = k + 1
                         GO TO 10
                 END IF
         END IF
 
-END PROGRAM problem02
+END PROGRAM problem
