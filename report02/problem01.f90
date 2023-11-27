@@ -2,8 +2,8 @@ program problem01
     implicit none
     integer, dimension(1:4) :: no           !Student No.
     integer, dimension(1:5) :: wa           !Sum of each subject
-    integer, dimension(1:4, 1:5) :: ten     !Point of each subject of students
-    real, dimension(1:5) ::avg              !Average point of each subjects
+    integer, dimension(1:4, 1:5) :: ten     !Points of each subject
+    real, dimension(1:5) ::avg              !Average point of each subject
     integer :: i, j
 
     wa = 0
@@ -20,10 +20,12 @@ program problem01
         end do
     end do
 
+    !Calculate average by each subject
     do j = 1, 5
-        avg(j) = wa(j) / 4
+        avg(j) = wa(j) / 4.0e0
     end do
 
+    !Output
     print '(A4, A6, A7, A5, 2A6)', 'Num', 'ENG', 'MATH', 'JPN', 'SCI', 'SOC'
     do i = 1, 4
         print '(I3, I7, 4I6)', no(i), (ten(i, j), j = 1, 5)
