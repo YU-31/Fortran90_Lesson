@@ -3,7 +3,8 @@ program problem03
     integer :: i
     real :: x(3), y(3), z(3), s, a
 
-    print *, 'Input x, y, z'
+    print *, 'Calculate area of triangle.'
+    print *, 'Input x, y, z of three points.'
     do i = 1, 3
         read *, x(i), y(i), z(i)
     end do
@@ -15,7 +16,11 @@ program problem03
     s = (dist(1,2) + dist(2,3) + dist(3,1)) / 2
     a = (s * (s - dist(1,2)) * (s - dist(2,3)) * (s - dist(3,1)))**0.5
 
-    print ('(f10.5)'), a
+    print *, 'Entered points:'
+    do i = 1, 3
+        print('("(", f10.4, ", ", f10.4, ", ", f10.4, ")")'), x(i), y(i), z(i)
+    end do
+    print ('("Area : ",f10.5)'), a
 
     !Function to calculate distance of two points
     contains

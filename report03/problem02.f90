@@ -6,6 +6,8 @@ program problem02
     dx = 0.1
     x0 = 0.0
 
+    print *, 'Calculate value of f(x) = x^3 - 5x^2 + 4x + 2 while increasing x by 0.1'
+    print ('(3x, "x", 7x, "f(x)", 4x, "diff(x)")')
     do i = 0, 50
         x = x0 + i * dx !Increase by dx(=0.1)
         print ('(3f8.3)'), x, fn(x), diffn(x)

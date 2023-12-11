@@ -3,6 +3,7 @@ program problem01
     integer :: i, j, n
     real, dimension(1:10) :: x, y, z, d
 
+    print *, 'Sort by shortest distance.'
     print *, 'Input Total Number'
     read *, n
     print *, 'Input x, y, z'
@@ -25,8 +26,9 @@ program problem01
         end do
     end do
 
+    print *, 'Show (x, y, z), distance; Sorted by shortest distance.'
     do i = 1, n
-        print ('(4f10.4)'), x(i), y(i), z(i), d(i)
+        print ('("(", f10.4, ", ", f10.4, ", ", f10.4, "), d =", f10.4)'), x(i), y(i), z(i), d(i)
     end do
 end program problem01
 
