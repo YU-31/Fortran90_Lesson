@@ -62,46 +62,46 @@ program bisection_method
         est(num) = -99.7e0 + real(num) !区間リストの設定
     end do
     print *, "計算過程は以下の通りです。"
-        allocate(solution(xOrder)) !解、更新回数、区間幅のリストは解の個数に設定
-        allocate(counter(xOrder))
-        allocate(width(xOrder))
-        do num = 1, 199      !解の探索
-            x1 = est(num)
-            x2 = est(num + 1)   !区間リストの隣合う要素から参照して区間を自動設定
-            if ( f1(x1) * f1(x2) <0 ) then
-                solution_num = solution_num + 1
-                cnt = 0
-                print '(i1, "個目の解")', solution_num
-                print '("反復回数", 7x, "推定解", 12x, "関数値")'
-                do
-                    cnt = cnt + 1
-                    xc = (x1 + x2) / 2
-                    if ( f1(x1) * f1(xc) < 0 ) then
-                        x2 = xc
-                    else if ( f1(xc) == 0 ) then
-                        print '(3x, i2, 3x, 2x, f13.6, 2x, f18.6)', cnt, xc, f1(xc) !計算過程の出力
-                        exit
-                    else
-                        x1 = xc
-                    end if
-                    print '(3x, i2, 3x, 2x, f13.6, 2x, f18.6)', cnt, xc, f1(xc) !計算過程の出力
-                    if ( abs(x1 - x2) <= eps ) then     !区間幅が必要精度以下になると終了
-                        exit
-                    else if ( cnt == 100 ) then             !100回の演算で収束しなければ強制終了
-                        exit
-                    end if
-                end do
-                solution(solution_num) = xc
-                counter(solution_num) = cnt
-                width(solution_num) = abs(x1 - x2)
-            end if
-        end do
+    allocate(solution(xOrder)) !解、更新回数、区間幅のリストは解の個数に設定
+    allocate(counter(xOrder))
+    allocate(width(xOrder))
+    do num = 1, 199      !解の探索
+        x1 = est(num)
+        x2 = est(num + 1)   !区間リストの隣合う要素から参照して区間を自動設定
+        if ( f(x1) * f(x2) <0 ) then
+            solution_num = solution_num + 1
+            cnt = 0
+            print '(i1, "個目の解")', solution_num
+            print '("反復回数", 7x, "推定解", 12x, "関数値")'
+            do
+                cnt = cnt + 1
+                xc = (x1 + x2) / 2
+                if ( f(x1) * f(xc) < 0 ) then
+                    x2 = xc
+                else if ( f(xc) == 0 ) then
+                    print '(3x, i2, 3x, 2x, f13.6, 2x, f18.6)', cnt, xc, f(xc) !計算過程の出力
+                    exit
+                else
+                    x1 = xc
+                end if
+                print '(3x, i2, 3x, 2x, f13.6, 2x, f18.6)', cnt, xc, f(xc) !計算過程の出力
+                if ( abs(x1 - x2) <= eps ) then     !区間幅が必要精度以下になると終了
+                    exit
+                else if ( cnt == 100 ) then             !100回の演算で収束しなければ強制終了
+                    exit
+                end if
+            end do
+            solution(solution_num) = xc
+            counter(solution_num) = cnt
+            width(solution_num) = abs(x1 - x2)
+        end if
+    end do
       
     !    最終的な計算結果の出力    !
     do solution_num = 1, xOrder
         print '(i1, "個目の解：")', solution_num
         print '(f10.6, "が解として得られました")', solution(solution_num)
-        print '("その時の関数値は", f10.6, "です")', f1(solution(solution_num))
+        print '("その時の関数値は", f10.6, "です")', f(solution(solution_num))
         print '("区間分割回数は", i3, "回です")', counter(solution_num)
         print '("最終分割後の区間長は",f10.6, "です")', width(solution_num)
     end do
@@ -109,7 +109,7 @@ program bisection_method
     !  内部手続き  !
     contains
     !  関数の入力  !
-    function f1(x) result(fvalue)
+    function f(x) result(fvalue)
         implicit none
         integer :: i
         real, intent(in) :: x
@@ -121,6 +121,6 @@ program bisection_method
             ftmp = ftmp + xCoefficient(i) * x ** (xOrder + 1 - i)
         end do
         fvalue = ftmp
-    end function f1
+    end function f
 
 end program bisection_method
