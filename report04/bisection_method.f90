@@ -8,11 +8,13 @@ program bisection_method
     integer :: i, num   !カウンタ
     integer :: n
 
+    !係数, 解, 区間長, 反復回数の記録は解の個数, すなわち方程式の次数に基づく
+    !個数のみしか必要ないので配列の大きさは後で指定
     real, dimension(:), allocatable :: xCoefficient   !係数を格納
     real, dimension(:), allocatable :: solution !解を格納
     real, dimension(:), allocatable :: width    !最終的な区間長を記録
     integer, dimension(:), allocatable :: counter !反復回数の記録
-    real, dimension(200) :: est
+    real, dimension(200) :: est !区間設定用のリスト
 
     !   方程式の構成    !
     print *, "f(x) = a_n*x^n + a_n-1*x^n-1 + ... + a_1 * x + a_0"
@@ -54,7 +56,7 @@ program bisection_method
     read *, n
     eps = 1.0e-1 ** n
 
-    !   自動解探索  !
+    !   演算   !
     !区間は[-99.7, -98.7] -> [-98.7, -97.7] -> ... -> [99.3, 100.3]と自動設定され区間内の解を探索する
     !（反復回数が1,2回で終わるのを防ぐために敢えて不自然な区間にしている）
     !1区間内に解が2個以上存在する場合や、重解を持つ場合には正しく求まらない
@@ -62,9 +64,13 @@ program bisection_method
         est(num) = -99.7e0 + real(num) !区間リストの設定
     end do
     print *, "計算過程は以下の通りです。"
+    print *, "結果が全て0の場合、重解や複素解を持つことにより正しく解を求められていません。"
     allocate(solution(xOrder)) !解、更新回数、区間幅のリストは解の個数に設定
     allocate(counter(xOrder))
     allocate(width(xOrder))
+    solution(:) = 0.0e0 !要素の初期値を0とする
+    counter(:) = 0  !結果が0で得られれば解けなかったことを意味する
+    width(:) = 0.0e0
     do num = 1, 199      !解の探索
         x1 = est(num)
         x2 = est(num + 1)   !区間リストの隣合う要素から参照して区間を自動設定
@@ -78,7 +84,7 @@ program bisection_method
                 xc = (x1 + x2) / 2
                 if ( f(x1) * f(xc) < 0 ) then
                     x2 = xc
-                else if ( f(xc) == 0 ) then
+                else if ( f(xc) == 0.0e0 ) then
                     print '(3x, i2, 3x, 2x, f13.6, 2x, f18.6)', cnt, xc, f(xc) !計算過程の出力
                     exit
                 else
@@ -87,7 +93,7 @@ program bisection_method
                 print '(3x, i2, 3x, 2x, f13.6, 2x, f18.6)', cnt, xc, f(xc) !計算過程の出力
                 if ( abs(x1 - x2) <= eps ) then     !区間幅が必要精度以下になると終了
                     exit
-                else if ( cnt == 100 ) then             !100回の演算で収束しなければ強制終了
+                else if ( cnt == 100 ) then         !100回の演算で収束しなければ強制終了
                     exit
                 end if
             end do
@@ -109,13 +115,14 @@ program bisection_method
     !  内部手続き  !
     contains
     !  関数の入力  !
+    !与関数の計算
     function f(x) result(fvalue)
         implicit none
         integer :: i
         real, intent(in) :: x
         real :: ftmp, fvalue
         
-        ftmp = 0
+        ftmp = 0    !初期化
         
         do i = 1, xOrder + 1
             ftmp = ftmp + xCoefficient(i) * x ** (xOrder + 1 - i)
